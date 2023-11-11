@@ -14,19 +14,19 @@
     </div>
     <div class="scrollable-container">
         <div class="scrollable-content" id="statusMessage">
-              <p>Hello</p>
-              <p>Hello</p>
-              <p>Hello</p>
-              <p>Hello</p>
-              <p>Hello</p>
-              <p>Hello</p>
-              <p>Hello</p>
-              <p>Hello</p>
-              <p>Hello</p>
-              <p>Hello</p>
-              <p>Hello</p>
-              <p>Hello</p>
-              <p>Hello</p>
+<!--              <p>Hello</p>-->
+<!--              <p>Hello</p>-->
+<!--              <p>Hello</p>-->
+<!--              <p>Hello</p>-->
+<!--              <p>Hello</p>-->
+<!--              <p>Hello</p>-->
+<!--              <p>Hello</p>-->
+<!--              <p>Hello</p>-->
+<!--              <p>Hello</p>-->
+<!--              <p>Hello</p>-->
+<!--              <p>Hello</p>-->
+<!--              <p>Hello</p>-->
+<!--              <p>Hello</p>-->
         </div>
     </div>
 </div>
@@ -37,85 +37,85 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
 
-<!--<script type="text/javascript" charset="utf-8">-->
-<!--    var socket = io.connect();-->
-<!--    socket.on('connect', function() {-->
-<!--        console.log('connected');-->
-<!--    });-->
+<script type="text/javascript" charset="utf-8">
+    var socket = io.connect();
+    socket.on('connect', function() {
+        console.log('connected');
+    });
 
-<!--    socket.on('status', function(text) {-->
-<!--        console.log('received');-->
-<!--        var text = text['text'];-->
-<!--        document.getElementById("statusMessage").innerHTML += text + "<br>";-->
-<!--        socket.emit('preprocess', {'text': 'Chunking'});-->
-<!--    });-->
+    socket.on('status', function(text) {
+        console.log('received');
+        var text = text['text'];
+        document.getElementById("statusMessage").innerHTML += text + "<br>";
+        socket.emit('preprocess', {'text': 'Chunking'});
+    });
 
-<!--    socket.on('pr-status', function(text) {-->
-<!--    console.log(text['num']);-->
-<!--        if (text['num'] == 2) {-->
-<!--            console.log('chunking');-->
-<!--            var text = text['text'];-->
-<!--            document.getElementById("statusMessage").innerHTML += text + "<br>";-->
-<!--            socket.emit('chunk', {'text': 'begin chunking'});-->
-<!--        } else {-->
-<!--            console.log('Preprocess Complete');-->
-<!--            var text = text['text'];-->
-<!--            document.getElementById("statusMessage").innerHTML += text + "<br>";-->
-<!--        }-->
-<!--    });-->
+    socket.on('pr-status', function(text) {
+    console.log(text['num']);
+        if (text['num'] == 2) {
+            console.log('chunking');
+            var text = text['text'];
+            document.getElementById("statusMessage").innerHTML += text + "<br>";
+            socket.emit('chunk', {'text': 'begin chunking'});
+        } else {
+            console.log('Preprocess Complete');
+            var text = text['text'];
+            document.getElementById("statusMessage").innerHTML += text + "<br>";
+        }
+    });
 
-<!--    socket.on('chunking', function(text) {-->
-<!--        if (text['num'] == 2) {-->
-<!--            console.log('Chunking Complete');-->
-<!--            var text = text['text'];-->
-<!--            document.getElementById("statusMessage").innerHTML += text + "<br>";-->
-<!--        } else {-->
-<!--            var text = text['text'];-->
-<!--            document.getElementById("statusMessage").innerHTML += text + "<br>";-->
-<!--            socket.emit('chunk_summarize', {'text': 'Summarizing each chunk'});-->
-<!--        }-->
-<!--    });-->
+    socket.on('chunking', function(text) {
+        if (text['num'] == 2) {
+            console.log('Chunking Complete');
+            var text = text['text'];
+            document.getElementById("statusMessage").innerHTML += text + "<br>";
+        } else {
+            var text = text['text'];
+            document.getElementById("statusMessage").innerHTML += text + "<br>";
+            socket.emit('chunk_summarize', {'text': 'Summarizing each chunk'});
+        }
+    });
 
-<!--    socket.on('summ_chunk', function(text) {-->
-<!--        if (text['num'] == 2) {-->
-<!--            console.log('Summarizing Chunk' + text['count']);-->
-<!--            var text = text['text'];-->
-<!--            document.getElementById("statusMessage").innerHTML += text + "<br>";-->
-<!--        } else {-->
-<!--            console.log('Summarizing Chunks');-->
-<!--            var text = text['text'];-->
-<!--            document.getElementById("statusMessage").innerHTML += text + "<br>";-->
-<!--        }-->
-<!--    });-->
+    socket.on('summ_chunk', function(text) {
+        if (text['num'] == 2) {
+            console.log('Summarizing Chunk' + text['count']);
+            var text = text['text'];
+            document.getElementById("statusMessage").innerHTML += text + "<br>";
+        } else {
+            console.log('Summarizing Chunks');
+            var text = text['text'];
+            document.getElementById("statusMessage").innerHTML += text + "<br>";
+        }
+    });
 
-<!--    socket.on('chunk_done', function(text) {-->
-<!--        console.log('Chunks Summarized');-->
-<!--        var text = text['text'];-->
-<!--        document.getElementById("statusMessage").innerHTML += text + "<br>";-->
-<!--        socket.emit('post_process', {'text': 'Starting Post-Process'});-->
-<!--    });-->
+    socket.on('chunk_done', function(text) {
+        console.log('Chunks Summarized');
+        var text = text['text'];
+        document.getElementById("statusMessage").innerHTML += text + "<br>";
+        socket.emit('post_process', {'text': 'Starting Post-Process'});
+    });
 
-<!--    socket.on('end_phase', function(text) {-->
-<!--        if (text['num'] == 1) {-->
-<!--            console.log('Postprocessing summary');-->
-<!--            var text = text['text'];-->
-<!--            document.getElementById("statusMessage").innerHTML += text + "<br>";-->
-<!--        } else if (text['num'] == 2) {-->
-<!--            console.log('Calculating Scores');-->
-<!--            var text = text['text'];-->
-<!--            document.getElementById("statusMessage").innerHTML += text + "<br>";-->
-<!--        } else {-->
-<!--            console.log('Scores of the summary');-->
-<!--            var text = text['text'];-->
-<!--            document.getElementById("statusMessage").innerHTML += text + "<br>";-->
-<!--        }-->
-<!--    });-->
+    socket.on('end_phase', function(text) {
+        if (text['num'] == 1) {
+            console.log('Postprocessing summary');
+            var text = text['text'];
+            document.getElementById("statusMessage").innerHTML += text + "<br>";
+        } else if (text['num'] == 2) {
+            console.log('Calculating Scores');
+            var text = text['text'];
+            document.getElementById("statusMessage").innerHTML += text + "<br>";
+        } else {
+            console.log('Scores of the summary');
+            var text = text['text'];
+            document.getElementById("statusMessage").innerHTML += text + "<br>";
+        }
+    });
 
-<!--    socket.on('summary', function(text) {-->
-<!--        console.log("Summary complete");-->
-<!--        var summary = text['text'];-->
-<!--        document.getElementById("summaryResult").innerHTML += "<br><br>"+ summary + "<br>";-->
-<!--    });-->
+    socket.on('summary', function(text) {
+        console.log("Summary complete");
+        var summary = text['text'];
+        document.getElementById("summaryResult").innerHTML += "<br><br>"+ summary + "<br>";
+    });
 
-<!--</script>-->
+</script>
 </html>
