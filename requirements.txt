@@ -1,0 +1,8 @@
+eventlet~=0.33.3
+transformers~=4.35.0
+flask~=3.0.0
+flask-socketio
+pypdf2~=3.0.1
+werkzeug~=3.0.0
+textstat~=0.7.3
+torch~=2.1.0
