@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/summary_page.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+<body>
+  <hr/>
+  <div class="messages">
+
+    <div class='container cont1'>
+      <div class="header">
+        <h4>Backend Processes will be displayed here.</h4>
+      </div>
+      <div class="scrollable-container">
+        <div class="scrollable-content" id="statusMessage">
+          <!--The Backend messages will be displayed here-->
+
+        </div>
+      </div>
+    </div>
+
+    <div class='container cont2'>
+      <div class="header">
+        <h4>The summary will be displayed here.</h4>
+      </div>
+      <div class="scrollable-container">
+        <div class="scrollable-content" id="summaryResult">
+          Your Summary is being generated.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="buttons gap-2 justify-content-center py-5">
+    <button type="button" class="btn btn-outline-primary" onclick="window.location.href='{{ url_for('main.audio') }}'" disabled>Generate Audio</button>
+    <button type="button" class="btn btn-outline-secondary" href="{{ url_for('main.download') }}" disabled>Download summary</button>
+    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#infoModal">Info</button>
+  </div>
+
+  <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="infoModalLabel">How this works...</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          The webpage provides real-time updates on the backend processes: <br/>
+          <br/>
+          1. **Preprocess and Chunking**: These initial steps are performed swiftly, and the system promptly displays the number of resulting chunks. <br/>
+          <br/>
+          2. **Summarization Process**: The model then comprehensively summarizes each chunk. Depending on the model chosen—'bart-base' or 'bart-large-cnn'—the summarization time varies. 'bart-base' averages around 10 seconds per chunk, producing somewhat illegible summaries, while 'bart-large-cnn' takes approximately 30 seconds or a bit more but yields better results with occasional irregularities. <br/>
+          <br/>
+          3. **Displaying Results**: After summarizing each chunk, the summary text is presented in a designated text-box.<br/>
+          <br/>
+          4. **Button States**: Throughout the backend process, all buttons are intentionally disabled to ensure a smooth workflow and prevent potential issues. These buttons become active once the summarization process is successfully completed. <br/>
+          <br/>
+          5. **Download Options**: Users are provided with the flexibility to download the generated summary text file or convert it into an audio file. <br/>
+          <br/>
+          Please note that the choice of model impacts both the summarization time and the quality of the generated summaries. The system prioritizes user experience by keeping buttons disabled during the backend processes and enabling them once the summarization is finished.<br/>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+<script type="text/javascript" charset="utf-8">
+  var socket = io.connect();
+
+  var audioButton = document.querySelector('.btn-outline-primary');
+  var downloadButton = document.querySelector('.btn-outline-secondary');
+  var logo = document.getElementById('nav_brand');
+  var homeNavItem = document.getElementById('homeNavItem');
+  var createNavItem = document.getElementById('createNavItem');
+  var aboutNavItem = document.getElementById('aboutNavItem');
+
+  socket.on('connect', function() {
+      console.log('connected');
+      logo.style.pointerEvents = 'none';
+      homeNavItem.classList.add('disabled');
+      createNavItem.classList.add('disabled');
+      aboutNavItem.classList.add('disabled');
+  });
+
+  socket.on('status', function(text) {
+      console.log('received');
+      var text = text['text'];
+      document.getElementById("statusMessage").innerHTML += text + "<br>";
+      socket.emit('preprocess', {'text': 'Chunking'});
+  });
+
+  socket.on('pr-status', function(text) {
+  console.log(text['num']);
+      if (text['num'] == 2) {
+          console.log('chunking');
+          var text = text['text'];
+          document.getElementById("statusMessage").innerHTML += text + "<br>";
+          socket.emit('chunk', {'text': 'begin chunking'});
+      } else {
+          console.log('Preprocess Complete');
+          var text = text['text'];
+          document.getElementById("statusMessage").innerHTML += text + "<br>";
+      }
+  });
+
+  socket.on('chunking', function(text) {
+      if (text['num'] == 2) {
+          console.log('Chunking Complete');
+          var text = text['text'];
+          document.getElementById("statusMessage").innerHTML += text + "<br>";
+      } else {
+          var text = text['text'];
+          document.getElementById("statusMessage").innerHTML += text + "<br>";
+          socket.emit('chunk_summarize', {'text': 'Summarizing each chunk'});
+      }
+  });
+
+  socket.on('summ_chunk', function(text) {
+      if (text['num'] == 2) {
+          console.log('Summarizing Chunk' + text['count']);
+          var text = text['text'];
+          document.getElementById("statusMessage").innerHTML += text + "<br>";
+      } else {
+          console.log('Summarizing Chunks');
+          var text = text['text'];
+          document.getElementById("statusMessage").innerHTML += text + "<br>";
+      }
+  });
+
+  socket.on('chunk_done', function(text) {
+      console.log('Chunks Summarized');
+      var text = text['text'];
+      document.getElementById("statusMessage").innerHTML += text + "<br>";
+      socket.emit('post_process', {'text': 'Starting Post-Process'});
+  });
+
+  socket.on('end_phase', function(text) {
+      if (text['num'] == 1) {
+          console.log('Postprocessing summary');
+          var text = text['text'];
+          document.getElementById("statusMessage").innerHTML += text + "<br>";
+      } else if (text['num'] == 2) {
+          console.log('Calculating Scores');
+          var text = text['text'];
+          document.getElementById("statusMessage").innerHTML += text + "<br>";
+      } else {
+          console.log('Scores of the summary');
+          var text = text['text'];
+          document.getElementById("statusMessage").innerHTML += text + "<br>";
+      }
+  });
+
+  socket.on('summary', function(text) {
+      console.log("Summary complete");
+      var summary = text['text'];
+      document.getElementById("summaryResult").innerHTML = "<br><br>"+ summary + "<br>";
+
+      logo.style.pointerEvents = 'auto';
+      homeNavItem.classList.remove('disabled');
+      createNavItem.classList.remove('disabled');
+      aboutNavItem.classList.remove('disabled');
+      downloadButton.removeAttribute('disabled');
+      audioButton.removeAttribute('disabled');
+  });
+
+  downloadButton.addEventListener('click', function() {
+        window.location.href = '{{ url_for('main.download') }}';
+  });
+
+</script>
+
+{% endblock %}

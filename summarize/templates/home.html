@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <link href="{{ url_for('static', filename='css/home.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+<body class="h-100 text-center text-bg-dark">
+  <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <main class="center-content">
+      <h1>Summarize and Listen</h1>
+      <p class="lead">Transform books into concise audiobooks. Simplify reading, save time. Try now for efficient learning or leisure on-the-go.</p>
+      <p class="lead">
+        <a href="{{ url_for('main.create') }}" class="btn btn-lg btn-outline-light ">Get started</a>
+      </p>
+    </main>
+    <footer class="mt-auto pb-2 text-white-50">
+      <a href="https://github.com/your-username/your-repo" target="_blank">
+        <img src="{{ url_for('static', filename='img/Github.png') }}" alt="Github" width="25" height="25" style="-webkit-filter: invert(1); filter: invert(1);">
+      </a>
+    </footer>
+  </div>
+</body>
+
+{% endblock %}

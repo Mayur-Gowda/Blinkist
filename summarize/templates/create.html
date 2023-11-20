@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <link href="{{ url_for('static', filename='css/create.css') }}" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+{% endblock %}
+
+{% block content %}
+<hr/>
+{% if layout == 'create' %}
+
+<div class="create">
+  <div class="col-lg-4 mx-auto" style="width: 350px;">
+    <div class="p-3 bg-white shadow rounded-lg" style="height: 320px;">
+      <img src="https://res.cloudinary.com/mhmd/image/upload/v1557366994/img_epm3iz.png" alt="" width="100" class="d-block mx-auto mb-4 mt-4">
+      <form method="POST" enctype="multipart/form-data">
+        <div class="py-4">
+          <input class="form-control form-control-sm rounded-pill" id="file" name="file" type="file" />
+        </div>
+        <div class="py-3">
+          <label for="fileUpload" class="file-upload btn btn-primary btn-block rounded-pill shadow">Upload
+            <input id="fileUpload" type="submit" hidden>
+          </label>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="infoPanel">
+  <p>
+    Note: Before summarizing, some things to keep in mind<br/>
+    <br/>
+    > The project is still under development, so the results may be unsatisfactory.<br/>
+    > Only pdfs are allowed<br/>
+    > Summarizing long text takes a lot of time, so preferably use this to summarize short pdfs.<br/>
+    (Although you can use this to summarize long pdfs, it may take a while
+  </p>
+</div>
+
+{% elif layout == 'audio' %}
+
+<div class="audio_file">
+  <p class="mb-0">Click to generate audio.</p>
+  <button type="button" class="btn btn-outline-primary" id="generateAudio">Generate Audio</button>
+  <button type="button" class="btn btn-outline-secondary" disabled id="downloadAudio">Download Audio</button>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    var generateButton = document.getElementById('generateAudio');
+    var downloadButton = document.getElementById('downloadAudio');
+
+    generateButton.addEventListener('click', function() {
+        // Generate audio logic here
+        generateButton.setAttribute('disabled', true);
+        downloadButton.setAttribute('disabled', true);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/audio_gen', true);
+
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                console.log(xhr.responseText);
+                downloadButton.removeAttribute('disabled');
+                // You can trigger additional actions here based on the response
+            } else {
+                console.error('Error:', xhr.status);
+            }
+        };
+
+        xhr.send();
+    });
+
+    downloadButton.addEventListener('click', function() {
+        window.location.href = '{{ url_for('main.audio_download') }}';
+    });
+});
+</script>
+{% endif %}
+
+{% endblock %}

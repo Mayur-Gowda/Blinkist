@@ -1,0 +1,36 @@
+.rounded-lg {
+  border-radius: 1rem;
+}
+
+.custom-file-label.rounded-pill {
+  border-radius: 50rem;
+}
+
+.custom-file-label.rounded-pill::after {
+  border-radius: 0 50rem 50rem 0;
+}
+
+.infoPanel {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #f8f9fa; /* Adjust the background color as needed */
+  padding: 10px; /* Adjust the padding as needed */
+  justify-content: center;
+  text-align: justify;
+  display: flex;
+  border-top: 2px solid #dee2e6;
+}
+
+.audio_file {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80vh; /* Use 100% of the viewport height */
+}
+
+.audio_file button {
+  margin-top: 15px; /* Adjust the value as needed */
+}
