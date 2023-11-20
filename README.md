@@ -8,8 +8,6 @@ The Book Summarizer and Audio Converter is a project designed to help users summ
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
-- [Usage](#usage)
-- [Folder Structure](#folder-structure)
 - [Technologies Used](#technologies-used)
 - [File Hierarchy](#file-hierarchy)
 
@@ -25,11 +23,13 @@ The Book Summarizer and Audio Converter is a project designed to help users summ
 ### Local Installation Guide
 Follow these steps to set up the Book Summarizer and Audio Converter project on your local machine.
 
+<a name="prerequisites"></a>
 ### Prerequisites
 Ensure you have the following installed on your system:
 - Python (version 3.10)
 - Virtualenv (for creating a virtual environment)
 
+<a name="installation"></a>
 ### Installation Options
 Choose the method that best suits you to get started with Blinkist:
 
@@ -53,12 +53,14 @@ pip install -r requirements.txt
 python main.py
 ```
 
+<a name="technologies-used"></a>
 ### Technologies Used
 - Flask: The web framework used for the backend server.
 - Flask-SocketIO: Enables real-time communication between the frontend and backend.
 - BART Models: Powerful transformers used for text summarization.
 - Pyttsx3: Library for converting text to speech and generating audio files.
 
+<a name="file-hierarchy"></a>
 ### File Hierarchy
 ```
 .
