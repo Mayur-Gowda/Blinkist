@@ -4,11 +4,16 @@ The main Python script. Creates a Flask app.
 
 """
 
+import os
 from summarize import create_app, socketio
 
 app = create_app()
 
 if __name__ == "__main__":
+    # Check if uploads folder exists, if not create it
+    if not os.path.exists('uploads'):
+        os.makedirs('uploads')
+
     # Run the Flask app with Socket.IO support
     # Set allow_unsafe_werkzeug=True to allow WebSocket transport
     socketio.run(app, allow_unsafe_werkzeug=True)
