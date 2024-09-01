@@ -1,6 +1,6 @@
 # Open Blinkist
 
-Book Summarizer and Audio Converter
+Book Summarizer and Audio Converter<br/>
 The Book Summarizer and Audio Converter is a project designed to help users summarize large volumes of text, such as books or documents, using advanced natural language processing models. It employs BART (Bidirectional and Auto-Regressive Transformers) models to break down the input text into manageable chunks and generate concise summaries for each chunk. Additionally, the project provides the functionality to convert the summarized text into an audio format, offering users an alternative way to consume the content.
 
 ## Table of Contents
